@@ -31,12 +31,12 @@
 
       <div class="image-container">
         <div class="image-wrapper">
-          <img src="/images/mouse_10064691.jpg" alt="Example interface 1" />
-          <p class="image-caption">Example of the first interface type</p>
+          <img src="/images/mouse_10064691.png" alt="Example interface 1" />
+          <p class="image-caption">Example of the mouse-based menu</p>
         </div>
         <div class="image-wrapper">
-          <img src="/images/keyboard_10064691.jpg" alt="Example interface 2" />
-          <p class="image-caption">Example of the second interface type</p>
+          <img src="/images/keyboard_10064691.png" alt="Example interface 2" class="larger-image" />
+          <p class="image-caption">Example of the keyboard-based menu</p>
         </div>
       </div>
 
@@ -110,19 +110,25 @@
 
   .image-wrapper {
     text-align: center;
+    background-color: white;
+    padding: 1rem;
   }
 
   img {
     max-width: 100%;
-    height: auto;
+    height: 200px;
+    object-fit: contain;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .image-caption {
     margin-top: 0.5rem;
     color: #666;
     font-size: 0.9rem;
+  }
+
+  .larger-image {
+    transform: scale(1.2);
   }
 
   .start-button {
