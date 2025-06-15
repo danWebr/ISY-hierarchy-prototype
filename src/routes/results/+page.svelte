@@ -6,6 +6,8 @@
   let correctPicks = 0;
   let averageTime = 0;
   let participantId = '';
+  let studyData: any[] = [];
+  let totalRounds = 3;
 
   onMount(() => {
     // Get participant ID from localStorage
@@ -17,11 +19,37 @@
       correctPicks = store.rounds.filter(round => round.isCorrect).length;
       const totalTime = store.rounds.reduce((sum, round) => sum + (round.timeTaken || 0), 0);
       averageTime = totalTime / store.rounds.length / 1000; // Convert to seconds
+      studyData = store.rounds;
+      totalRounds = store.totalRounds;
     })();
   });
 
   function handleRestart() {
     goto('/instructions');
+  }
+
+  function downloadCSV() {
+    const headers = ['ParticipantID', 'Trial', 'Technique', 'Time', 'Error'];
+    const csvContent = [
+      headers.join(','),
+      ...studyData.map((round, index) => [
+        participantId,
+        index % totalRounds, // This will give us 0,1,2,... for both mouse and keyboard rounds
+        index < totalRounds ? '0' : '1', // First set is mouse, second set is keyboard
+        (round.timeTaken || 0) / 1000, // Convert to seconds
+        round.isCorrect ? 0 : 1
+      ].join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `DaniloWeberHierarchy.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 </script>
 
@@ -37,7 +65,7 @@
 
       <div class="result-item">
         <h2>Correct Selections</h2>
-        <div class="result-value">{correctPicks} out of 6</div>
+        <div class="result-value">{correctPicks} out of {totalRounds * 2}</div>
       </div>
 
       <div class="result-item">
@@ -46,9 +74,14 @@
       </div>
     </div>
 
-    <button class="restart-button" on:click={handleRestart}>
-      Start New Study
-    </button>
+    <div class="button-container">
+      <button class="download-button" on:click={downloadCSV}>
+        Download Results (CSV)
+      </button>
+      <button class="restart-button" on:click={handleRestart}>
+        Start New Study
+      </button>
+    </div>
   </div>
 </main>
 
@@ -101,10 +134,33 @@
     font-weight: 500;
   }
 
+  .button-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .download-button {
+    display: block;
+    width: 200px;
+    padding: 1rem 2rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .download-button:hover {
+    background-color: #0056b3;
+  }
+
   .restart-button {
     display: block;
     width: 200px;
-    margin: 0 auto;
     padding: 1rem 2rem;
     background-color: #28a745;
     color: white;
@@ -126,6 +182,11 @@
 
     .results-card {
       padding: 1.5rem;
+    }
+
+    .button-container {
+      flex-direction: column;
+      align-items: center;
     }
   }
 </style> 
