@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { studyStore, startNewRound, endRound, isItemUsed } from '$lib/stores/studyStore';
+  import { studyStore, startNewRound, endRound, isItemUsed, startStudy } from '$lib/stores/studyStore';
   import { menuDemoItems, initializeRandomCategories, type MenuItem, type SubMenuItem, type SubSubMenuItem, type SubSubSubMenuItem } from '$lib/stores/menuStore';
 
   let mainMenuItems: MenuItem[] = [];
@@ -41,6 +41,7 @@
 
   onMount(() => {
     initializeRandomCategories();
+    startStudy();  // Start the first set
     startNewRound();
     randomItem = getRandomSubSubSubItem();
   });
@@ -58,6 +59,7 @@
   }
 
   function handleItemSelect(item: string) {
+    console.log('Menu demo - Selected item:', item, 'Correct item:', randomItem);
     selectedItem = item;
     endRound(item, randomItem);
     
@@ -70,8 +72,8 @@
       activeSubMenu = null;
       activeSubSubMenu = null;
     } else {
-      // Study complete, go to results
-      goto('/results');
+      // First set complete, go to keyboard menu demo
+      goto('/keyboard-menu-demo');
     }
   }
 </script>

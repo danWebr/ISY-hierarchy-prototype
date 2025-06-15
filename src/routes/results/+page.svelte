@@ -8,10 +8,12 @@
 
   onMount(() => {
     studyStore.subscribe(store => {
+      console.log('All rounds:', store.rounds);
+      console.log('Rounds with isCorrect:', store.rounds.map(r => ({ selected: r.selectedItem, correct: r.correctItem, isCorrect: r.isCorrect })));
       correctPicks = store.rounds.filter(round => round.isCorrect).length;
       const totalTime = store.rounds.reduce((sum, round) => sum + (round.timeTaken || 0), 0);
       averageTime = totalTime / store.rounds.length / 1000; // Convert to seconds
-    });
+    })();
   });
 
   function handleRestart() {
@@ -26,7 +28,7 @@
     <div class="results-content">
       <div class="result-item">
         <h2>Correct Selections</h2>
-        <div class="result-value">{correctPicks} out of 3</div>
+        <div class="result-value">{correctPicks} out of 6</div>
       </div>
 
       <div class="result-item">

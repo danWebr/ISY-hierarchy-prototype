@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { studyStore, startNewRound, endRound, isItemUsed } from '$lib/stores/studyStore';
+  import { studyStore, startNewRound, endRound, isItemUsed, startSecondSet } from '$lib/stores/studyStore';
   import { keyboardMenuDemoItems, initializeRandomCategories, type MenuItem, type SubMenuItem, type SubSubMenuItem, type SubSubSubMenuItem } from '$lib/stores/menuStore';
 
   let mainMenuItems: MenuItem[] = [];
@@ -17,6 +17,7 @@
   let randomItem: string;
   let currentRound = 0;
   let totalRounds = 3;
+  let secondSetRound = 0;  // Track rounds in second set
 
   studyStore.subscribe(store => {
     currentRound = store.currentRound;
@@ -41,6 +42,7 @@
 
   onMount(() => {
     initializeRandomCategories();
+    startSecondSet();  // Start the second set immediately
     startNewRound();
     randomItem = getRandomSubSubSubItem();
   });
@@ -93,10 +95,11 @@
       const num = parseInt(key);
       if (!isNaN(num) && num >= 1 && num <= maxSubSubSub) {
         const selectedItem = currentSubSubMenu.subSubSubItems[num - 1].label;
-        activeSubSubMenu = selectedItem;
+        console.log('Selected item:', selectedItem, 'Correct item:', randomItem);
         endRound(selectedItem, randomItem);
         
-        if (currentRound < totalRounds) {
+        secondSetRound++;
+        if (secondSetRound < totalRounds) {
           // Start next round
           startNewRound();
           randomItem = getRandomSubSubSubItem();
@@ -120,6 +123,23 @@
       } else if (activeMenu !== null) {
         activeMenu = null;
       }
+    }
+  }
+
+  function handleItemSelect(item: string) {
+    endRound(item, randomItem);
+    
+    secondSetRound++;
+    if (secondSetRound < totalRounds) {
+      // Start next round
+      startNewRound();
+      randomItem = getRandomSubSubSubItem();
+      activeMenu = null;
+      activeSubMenu = null;
+      activeSubSubMenu = null;
+    } else {
+      // Study complete, go to results
+      goto('/results');
     }
   }
 </script>
