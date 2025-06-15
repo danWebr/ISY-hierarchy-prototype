@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { STUDY_CONFIG } from '$lib/config';
 
 interface StudyRound {
     startTime: number | null;
@@ -20,7 +21,7 @@ interface StudyStore {
 export const studyStore = writable<StudyStore>({
     rounds: [],
     currentRound: 0,
-    totalRounds: 3,
+    totalRounds: STUDY_CONFIG.totalRounds,
     usedItems: [],
     currentSet: 1
 });
@@ -29,7 +30,7 @@ export function startStudy() {
     studyStore.update(store => ({
         rounds: [],
         currentRound: 0,
-        totalRounds: 3,
+        totalRounds: STUDY_CONFIG.totalRounds,
         usedItems: [],
         currentSet: 1
     }));
@@ -50,9 +51,9 @@ export function startNewRound() {
         };
         
         // If we're in the second set, update the existing round instead of adding a new one
-        if (store.currentSet === 2 && store.rounds.length > 3) {
+        if (store.currentSet === 2 && store.rounds.length > STUDY_CONFIG.totalRounds) {
             const updatedRounds = [...store.rounds];
-            updatedRounds[store.currentRound + 3] = newRound;
+            updatedRounds[store.currentRound + STUDY_CONFIG.totalRounds] = newRound;
             return {
                 ...store,
                 currentRound: store.currentRound + 1,
@@ -75,7 +76,7 @@ export function endRound(selectedItem: string, correctItem: string) {
             throw new Error('No active round');
         }
         const updatedRounds = [...store.rounds];
-        const roundIndex = store.currentSet === 2 ? store.currentRound + 2 : store.currentRound - 1;
+        const roundIndex = store.currentSet === 2 ? store.currentRound + STUDY_CONFIG.totalRounds - 1 : store.currentRound - 1;
         updatedRounds[roundIndex] = {
             ...updatedRounds[roundIndex],
             endTime,
@@ -111,8 +112,8 @@ export function isItemUsed(item: string): boolean {
 export function startSecondSet() {
     studyStore.update(store => {
         // Only initialize new rounds if we haven't already
-        if (store.rounds.length <= 3) {
-            const newRounds = Array(3).fill(null).map(() => ({
+        if (store.rounds.length <= STUDY_CONFIG.totalRounds) {
+            const newRounds = Array(STUDY_CONFIG.totalRounds).fill(null).map(() => ({
                 startTime: Date.now(),
                 endTime: null,
                 timeTaken: null,

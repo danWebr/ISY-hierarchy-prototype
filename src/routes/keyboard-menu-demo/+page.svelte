@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { studyStore, startNewRound, endRound, isItemUsed, startSecondSet } from '$lib/stores/studyStore';
   import { keyboardMenuDemoItems, initializeRandomCategories, type MenuItem, type SubMenuItem, type SubSubMenuItem, type SubSubSubMenuItem } from '$lib/stores/menuStore';
+  import { STUDY_CONFIG } from '$lib/config';
 
   let mainMenuItems: MenuItem[] = [];
 
@@ -16,7 +17,7 @@
   let selectedItem: string | null = null;
   let randomItem: string;
   let currentRound = 0;
-  let totalRounds = 3;
+  let totalRounds = STUDY_CONFIG.totalRounds;
   let secondSetRound = 0;  // Track rounds in second set
 
   studyStore.subscribe(store => {
@@ -152,7 +153,7 @@
       Please select: '{randomItem}'
     </div>
     <div class="round-info">
-      Round {currentRound} of {totalRounds}
+      Round {secondSetRound + 1} of {totalRounds}
     </div>
   </div>
 

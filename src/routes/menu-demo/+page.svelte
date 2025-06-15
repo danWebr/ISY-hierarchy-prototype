@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { studyStore, startNewRound, endRound, isItemUsed, startStudy } from '$lib/stores/studyStore';
   import { menuDemoItems, initializeRandomCategories, type MenuItem, type SubMenuItem, type SubSubMenuItem, type SubSubSubMenuItem } from '$lib/stores/menuStore';
+  import { STUDY_CONFIG } from '$lib/config';
 
   let mainMenuItems: MenuItem[] = [];
 
@@ -16,7 +17,7 @@
   let selectedItem: string | null = null;
   let randomItem: string;
   let currentRound = 0;
-  let totalRounds = 3;
+  let totalRounds = STUDY_CONFIG.totalRounds;
 
   studyStore.subscribe(store => {
     currentRound = store.currentRound;

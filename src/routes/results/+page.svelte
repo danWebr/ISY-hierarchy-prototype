@@ -2,12 +2,13 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import { studyStore } from '$lib/stores/studyStore';
+  import { STUDY_CONFIG } from '$lib/config';
 
   let correctPicks = 0;
   let averageTime = 0;
   let participantId = '';
   let studyData: any[] = [];
-  let totalRounds = 3;
+  let totalRounds = STUDY_CONFIG.totalRounds;
 
   onMount(() => {
     // Get participant ID from localStorage
