@@ -16,16 +16,26 @@
       <section class="text-section">
         <h2>Welcome to the Study</h2>
         <p>
-          In this study, you will be presented with a series of tasks that involve organizing and categorizing information.
-          Please read the following instructions carefully before proceeding.
+          In this study, you will be comparing two different ways of navigating through hierarchical menus:
+          using a mouse and using a keyboard. You will be asked to find specific items in a menu system
+          using both interaction methods.
         </p>
       </section>
 
       <section class="text-section">
         <h2>What to Expect</h2>
         <p>
-          You will see two different types of interfaces that you'll need to interact with.
-          The images below show examples of what you'll encounter during the study.
+          The study consists of multiple blocks, each containing rounds where you'll use both the mouse-based
+          and keyboard-based interfaces. You'll be shown a target item to find, and your task is to navigate
+          through the menu hierarchy to select it as quickly and accurately as possible.
+        </p>
+        <p>
+          The images below show examples of what you'll encounter during the study. The first image shows
+          the mouse-based interface where you can hover over menu items to reveal submenus. The second image
+          shows the keyboard-based interface where you'll use number keys to navigate through the menu levels.
+        </p>
+        <p>
+          There will be a total of 120 rounds in the study, split across 3 blocks. Each block will have 20 rounds for each of the two interaction methods.
         </p>
       </section>
 
@@ -43,8 +53,9 @@
       <section class="text-section">
         <h2>Getting Started</h2>
         <p>
-          When you're ready to begin, click the "Start" button below.
-          The study will take approximately 20-30 minutes to complete.
+          When you're ready to begin, click the "Start" button below. The study will take approximately
+          20-30 minutes to complete. You'll be guided through each block and round, and your performance
+          will be automatically recorded.
         </p>
       </section>
     </div>

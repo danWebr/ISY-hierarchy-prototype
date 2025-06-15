@@ -420,20 +420,4 @@
     background-color: #e9ecef;
   }
 
-  .instructions h2 {
-    margin-top: 0;
-    color: #212529;
-    font-size: 1.2rem;
-  }
-
-  .instructions ul {
-    margin: 0;
-    padding-left: 1.5rem;
-  }
-
-  .instructions li {
-    margin: 0.5rem 0;
-    color: #495057;
-  }
-
 </style> 
