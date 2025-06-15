@@ -1,11 +1,27 @@
 <script>
   import { goto } from '$app/navigation';
+  import { onMount } from 'svelte';
+  
   let participantId = '';
   let submitted = false;
+  let errorMessage = '';
+
+  onMount(() => {
+    // Generate a random number between 100000 and 1000000 (inclusive)
+    const randomId = Math.floor(100000 + Math.random() * 900001).toString();
+    participantId = randomId;
+  });
 
   function handleSubmit() {
+    const numId = parseInt(participantId);
+    if (isNaN(numId) || numId < 100000 || numId > 1000000) {
+      errorMessage = 'Please enter a number between 100000 and 1000000';
+      return;
+    }
+    
     if (participantId.trim()) {
       submitted = true;
+      errorMessage = '';
       // Store participant ID in localStorage
       localStorage.setItem('participantId', participantId);
       // Navigate to instructions page
@@ -30,6 +46,9 @@
             placeholder="Enter your participant ID"
             required
           />
+          {#if errorMessage}
+            <p class="error-message">{errorMessage}</p>
+          {/if}
         </div>
         <button type="submit">Start Study</button>
       </form>
@@ -119,5 +138,11 @@
     color: #28a745;
     text-align: center;
     font-weight: 500;
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
   }
 </style>

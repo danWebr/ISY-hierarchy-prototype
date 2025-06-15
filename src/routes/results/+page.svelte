@@ -5,8 +5,12 @@
 
   let correctPicks = 0;
   let averageTime = 0;
+  let participantId = '';
 
   onMount(() => {
+    // Get participant ID from localStorage
+    participantId = localStorage.getItem('participantId') || 'Unknown';
+    
     studyStore.subscribe(store => {
       console.log('All rounds:', store.rounds);
       console.log('Rounds with isCorrect:', store.rounds.map(r => ({ selected: r.selectedItem, correct: r.correctItem, isCorrect: r.isCorrect })));
@@ -26,6 +30,11 @@
     <h1>Study Results</h1>
     
     <div class="results-content">
+      <div class="result-item">
+        <h2>Participant ID</h2>
+        <div class="result-value">{participantId}</div>
+      </div>
+
       <div class="result-item">
         <h2>Correct Selections</h2>
         <div class="result-value">{correctPicks} out of 6</div>
