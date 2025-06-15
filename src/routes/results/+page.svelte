@@ -9,19 +9,21 @@
   let participantId = '';
   let studyData: any[] = [];
   let totalRounds = STUDY_CONFIG.totalRounds;
+  let totalBlocks = STUDY_CONFIG.totalBlocks;
 
   onMount(() => {
     // Get participant ID from localStorage
     participantId = localStorage.getItem('participantId') || 'Unknown';
     
     studyStore.subscribe(store => {
-      console.log('All rounds:', store.rounds);
-      console.log('Rounds with isCorrect:', store.rounds.map(r => ({ selected: r.selectedItem, correct: r.correctItem, isCorrect: r.isCorrect })));
-      correctPicks = store.rounds.filter(round => round.isCorrect).length;
-      const totalTime = store.rounds.reduce((sum, round) => sum + (round.timeTaken || 0), 0);
-      averageTime = totalTime / store.rounds.length / 1000; // Convert to seconds
-      studyData = store.rounds;
+      console.log('All rounds:', store.completedRounds);
+      console.log('Rounds with isCorrect:', store.completedRounds.map(r => ({ selected: r.selectedItem, correct: r.correctItem, isCorrect: r.isCorrect })));
+      correctPicks = store.completedRounds.filter(round => round.isCorrect).length;
+      const totalTime = store.completedRounds.reduce((sum, round) => sum + round.timeTaken, 0);
+      averageTime = totalTime / store.completedRounds.length / 1000; // Convert to seconds
+      studyData = store.completedRounds;
       totalRounds = store.totalRounds;
+      totalBlocks = store.totalBlocks;
     })();
   });
 
@@ -30,16 +32,21 @@
   }
 
   function downloadCSV() {
-    const headers = ['ParticipantID', 'Trial', 'Technique', 'Time', 'Error'];
+    const headers = ['ParticipantID', 'Block', 'Trial', 'Technique', 'Time', 'Error'];
     const csvContent = [
       headers.join(','),
-      ...studyData.map((round, index) => [
-        participantId,
-        index % totalRounds, // This will give us 0,1,2,... for both mouse and keyboard rounds
-        index < totalRounds ? '0' : '1', // First set is mouse, second set is keyboard
-        (round.timeTaken || 0) / 1000, // Convert to seconds
-        round.isCorrect ? 0 : 1
-      ].join(','))
+      ...studyData.map((round, index) => {
+        const trialNumber = (index % (totalRounds * 2)) % totalRounds;
+        const technique = index % (totalRounds * 2) < totalRounds ? '0' : '1'; // First set is mouse, second set is keyboard
+        return [
+          participantId,
+          round.block,
+          trialNumber,
+          technique,
+          (round.timeTaken || 0) / 1000, // Convert to seconds
+          round.isCorrect ? 0 : 1
+        ].join(',');
+      })
     ].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -65,8 +72,13 @@
       </div>
 
       <div class="result-item">
+        <h2>Total Blocks Completed</h2>
+        <div class="result-value">{totalBlocks}</div>
+      </div>
+
+      <div class="result-item">
         <h2>Correct Selections</h2>
-        <div class="result-value">{correctPicks} out of {totalRounds * 2}</div>
+        <div class="result-value">{correctPicks} out of {totalRounds * 2 * totalBlocks}</div>
       </div>
 
       <div class="result-item">

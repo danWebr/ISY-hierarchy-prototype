@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { goto } from '$app/navigation';
   import { studyStore, startNewRound, endRound, isItemUsed, startStudy } from '$lib/stores/studyStore';
   import { menuDemoItems, initializeRandomCategories, type MenuItem, type SubMenuItem, type SubSubMenuItem, type SubSubSubMenuItem } from '$lib/stores/menuStore';
@@ -18,10 +18,15 @@
   let randomItem: string;
   let currentRound = 0;
   let totalRounds = STUDY_CONFIG.totalRounds;
+  let currentBlock = 1;
+  let totalBlocks = STUDY_CONFIG.totalBlocks;
 
-  studyStore.subscribe(store => {
+  // Subscribe to store changes
+  const unsubscribe = studyStore.subscribe(store => {
     currentRound = store.currentRound;
     totalRounds = store.totalRounds;
+    currentBlock = store.currentBlock;
+    totalBlocks = store.totalBlocks;
   });
 
   function getRandomSubSubSubItem(): string {
@@ -42,9 +47,20 @@
 
   onMount(() => {
     initializeRandomCategories();
-    startStudy();  // Start the first set
-    startNewRound();
+    // Only start a new study if we're in block 1
+    if (currentBlock === 1) {
+      startStudy();
+      startNewRound();
+    } else if (currentRound === 0) {
+      // If we're in a new block and haven't started a round yet
+      startNewRound();
+    }
     randomItem = getRandomSubSubSubItem();
+  });
+
+  // Clean up subscription when component is destroyed
+  onDestroy(() => {
+    unsubscribe();
   });
 
   function handleMenuEnter(itemId: number) {
@@ -60,7 +76,7 @@
   }
 
   function handleItemSelect(item: string) {
-    console.log('Menu demo - Selected item:', item, 'Correct item:', randomItem);
+    console.log('Menu demo - Selected item:', item, 'Correct item:', randomItem, 'Current round:', currentRound);
     selectedItem = item;
     endRound(item, randomItem);
     
@@ -74,6 +90,7 @@
       activeSubSubMenu = null;
     } else {
       // First set complete, go to keyboard menu demo
+      console.log('First set complete, going to keyboard demo');
       goto('/keyboard-menu-demo');
     }
   }
@@ -85,7 +102,7 @@
           Please select: '{randomItem}'
         </div>
         <div class="round-info">
-          Round {currentRound} of {totalRounds}
+          Block {currentBlock} of {totalBlocks} - Round {currentRound} of {totalRounds}
         </div>
     </div>
 

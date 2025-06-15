@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { goto } from '$app/navigation';
-  import { studyStore, startNewRound, endRound, isItemUsed, startSecondSet } from '$lib/stores/studyStore';
+  import { studyStore, startNewRound, endRound, isItemUsed, startSecondSet, startNewBlock } from '$lib/stores/studyStore';
   import { keyboardMenuDemoItems, initializeRandomCategories, type MenuItem, type SubMenuItem, type SubSubMenuItem, type SubSubSubMenuItem } from '$lib/stores/menuStore';
   import { STUDY_CONFIG } from '$lib/config';
 
@@ -19,10 +19,15 @@
   let currentRound = 0;
   let totalRounds = STUDY_CONFIG.totalRounds;
   let secondSetRound = 0;  // Track rounds in second set
+  let currentBlock = 1;
+  let totalBlocks = STUDY_CONFIG.totalBlocks;
 
-  studyStore.subscribe(store => {
+  // Subscribe to store changes
+  const unsubscribe = studyStore.subscribe(store => {
     currentRound = store.currentRound;
     totalRounds = store.totalRounds;
+    currentBlock = store.currentBlock;
+    totalBlocks = store.totalBlocks;
   });
 
   function getRandomSubSubSubItem(): string {
@@ -43,10 +48,48 @@
 
   onMount(() => {
     initializeRandomCategories();
-    startSecondSet();  // Start the second set immediately
-    startNewRound();
+    startSecondSet();  // Start the second set
+    if (currentRound === 0) {
+      startNewRound();
+    }
     randomItem = getRandomSubSubSubItem();
+    console.log('Keyboard demo mounted:', {
+      currentRound,
+      totalRounds,
+      currentBlock,
+      totalBlocks
+    });
   });
+
+  // Clean up subscription when component is destroyed
+  onDestroy(() => {
+    unsubscribe();
+  });
+
+  function handleItemSelect(item: string) {
+    console.log('Keyboard demo - Selected item:', item, 'Correct item:', randomItem, 'Round:', secondSetRound + 1);
+    endRound(item, randomItem);
+    
+    secondSetRound++;
+    if (secondSetRound < totalRounds) {
+      // Start next round
+      startNewRound();
+      randomItem = getRandomSubSubSubItem();
+      activeMenu = null;
+      activeSubMenu = null;
+      activeSubSubMenu = null;
+    } else {
+      // Both mouse and keyboard rounds are complete for this block
+      if (currentBlock < totalBlocks) {
+        // Start a new block
+        startNewBlock();
+        goto('/menu-demo');
+      } else {
+        // All blocks complete, go to results
+        goto('/results');
+      }
+    }
+  }
 
   function handleKeyPress(event: KeyboardEvent) {
     const key = event.key;
@@ -96,7 +139,7 @@
       const num = parseInt(key);
       if (!isNaN(num) && num >= 1 && num <= maxSubSubSub) {
         const selectedItem = currentSubSubMenu.subSubSubItems[num - 1].label;
-        console.log('Selected item:', selectedItem, 'Correct item:', randomItem);
+        console.log('Keyboard demo - Selected item:', selectedItem, 'Correct item:', randomItem);
         endRound(selectedItem, randomItem);
         
         secondSetRound++;
@@ -108,8 +151,15 @@
           activeSubMenu = null;
           activeSubSubMenu = null;
         } else {
-          // Study complete, go to results
-          goto('/results');
+          // Both mouse and keyboard rounds are complete for this block
+          if (currentBlock < totalBlocks) {
+            // Start a new block
+            startNewBlock();
+            goto('/menu-demo');
+          } else {
+            // All blocks complete, go to results
+            goto('/results');
+          }
         }
         return;
       }
@@ -126,23 +176,6 @@
       }
     }
   }
-
-  function handleItemSelect(item: string) {
-    endRound(item, randomItem);
-    
-    secondSetRound++;
-    if (secondSetRound < totalRounds) {
-      // Start next round
-      startNewRound();
-      randomItem = getRandomSubSubSubItem();
-      activeMenu = null;
-      activeSubMenu = null;
-      activeSubSubMenu = null;
-    } else {
-      // Study complete, go to results
-      goto('/results');
-    }
-  }
 </script>
 
 <svelte:window on:keydown={handleKeyPress}/>
@@ -153,7 +186,7 @@
       Please select: '{randomItem}'
     </div>
     <div class="round-info">
-      Round {secondSetRound + 1} of {totalRounds}
+      Block {currentBlock} of {totalBlocks} - Round {secondSetRound + 1} of {totalRounds}
     </div>
   </div>
 
