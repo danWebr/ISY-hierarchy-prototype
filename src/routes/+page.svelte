@@ -32,8 +32,8 @@
 
 <main class="container">
   <div class="welcome-card">
-    <h1>Welcome to the Study</h1>
-    <p>Thank you for participating in our research study. To begin, please enter your participant ID below.</p>
+    <h1>Hierarchy Navigation</h1>
+    <p>Thank you for participating in my experiment. To begin, please enter your participant ID or use the random ID below.</p>
     
     {#if !submitted}
       <form on:submit|preventDefault={handleSubmit} class="form">
@@ -59,15 +59,6 @@
 </main>
 
 <style>
-  :global(body) {
-    margin: 0;
-    overflow: hidden;
-  }
-
-  :global(html) {
-    overflow: hidden;
-  }
-  
   .container {
     display: flex;
     justify-content: center;

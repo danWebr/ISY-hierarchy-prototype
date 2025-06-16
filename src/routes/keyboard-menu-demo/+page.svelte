@@ -186,7 +186,9 @@
       Please select: '{randomItem}'
     </div>
     <div class="round-info">
-      Block {currentBlock} of {totalBlocks} - Round {secondSetRound + 1} of {totalRounds}
+      <div class="progress-container" style="background: linear-gradient(to right, #4CAF50 {(secondSetRound / totalRounds) * 100}%, #e9ecef {(secondSetRound / totalRounds) * 100}%)">
+        Block {currentBlock} of {totalBlocks} - Round {secondSetRound + 1} of {totalRounds}
+      </div>
     </div>
   </div>
 
@@ -247,6 +249,9 @@
       {/each}
     </nav>
   </div>
+  <div class="esc-hint">
+    Press ESC to go back one level in the menu
+  </div>
 </main>
 
 <style>
@@ -291,12 +296,18 @@
   }
 
   .round-info {
-    padding: 0.5rem;
-    background-color: #e9ecef;
+    padding: 0.25rem;
     border-radius: 4px;
+    background-color: #e9ecef;
+  }
+
+  .progress-container {
+    padding: 0.25rem;
+    border-radius: 2px;
     text-align: center;
     font-weight: 500;
-    color: #495057;
+    color: #212529;
+    transition: background 0.3s ease;
   }
 
   .menu-container {
@@ -420,4 +431,15 @@
     background-color: #e9ecef;
   }
 
+  .esc-hint {
+    margin-top: 17rem;
+    padding: 0.5rem 1rem;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    color: #495057;
+    font-size: 0.9rem;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
 </style> 

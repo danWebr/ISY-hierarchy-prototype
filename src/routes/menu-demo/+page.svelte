@@ -102,7 +102,9 @@
           Please select: '{randomItem}'
         </div>
         <div class="round-info">
-          Block {currentBlock} of {totalBlocks} - Round {currentRound} of {totalRounds}
+          <div class="progress-container" style="background: linear-gradient(to right, #4CAF50 {((currentRound - 1) / totalRounds) * 100}%, #e9ecef {((currentRound - 1) / totalRounds) * 100}%)">
+            Block {currentBlock} of {totalBlocks} - Round {currentRound} of {totalRounds}
+          </div>
         </div>
     </div>
 
@@ -308,11 +310,17 @@
   }
 
   .round-info {
-    padding: 0.5rem;
-    background-color: #e9ecef;
+    padding: 0.25rem;
     border-radius: 4px;
+    background-color: #e9ecef;
+  }
+
+  .progress-container {
+    padding: 0.25rem;
+    border-radius: 2px;
     text-align: center;
     font-weight: 500;
-    color: #495057;
+    color: #212529;
+    transition: background 0.3s ease;
   }
 </style> 

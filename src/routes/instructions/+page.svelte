@@ -14,9 +14,9 @@
     
     <div class="content">
       <section class="text-section">
-        <h2>Welcome to the Study</h2>
+        <h2>Welcome to the Experiment</h2>
         <p>
-          In this study, you will be comparing two different ways of navigating through hierarchical menus:
+          In this experiment, you will be comparing two different ways of navigating through hierarchical menus:
           using a mouse and using a keyboard. You will be asked to find specific items in a menu system
           using both interaction methods.
         </p>
@@ -25,17 +25,17 @@
       <section class="text-section">
         <h2>What to Expect</h2>
         <p>
-          The study consists of multiple blocks, each containing rounds where you'll use both the mouse-based
+          The experiment consists of multiple blocks, each containing rounds where you'll use both the mouse-based
           and keyboard-based interfaces. You'll be shown a target item to find, and your task is to navigate
           through the menu hierarchy to select it as quickly and accurately as possible.
         </p>
         <p>
-          The images below show examples of what you'll encounter during the study. The first image shows
+          The images below show examples of what you'll encounter during the experiment. The first image shows
           the mouse-based interface where you can hover over menu items to reveal submenus. The second image
           shows the keyboard-based interface where you'll use number keys to navigate through the menu levels.
         </p>
         <p>
-          There will be a total of 120 rounds in the study, split across 3 blocks. Each block will have 20 rounds for each of the two interaction methods.
+          There will be a total of 120 rounds in the experiment, split across 3 blocks. Each block will have 20 rounds for each of the two interaction methods.
         </p>
       </section>
 
@@ -53,7 +53,7 @@
       <section class="text-section">
         <h2>Getting Started</h2>
         <p>
-          When you're ready to begin, click the "Start" button below. The study will take approximately
+          When you're ready to begin, click the "Start" button below. The experiment will take approximately
           20-30 minutes to complete. You'll be guided through each block and round, and your performance
           will be automatically recorded.
         </p>

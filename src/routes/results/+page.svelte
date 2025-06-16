@@ -63,7 +63,7 @@
 
 <main class="container">
   <div class="results-card">
-    <h1>Study Results</h1>
+    <h1>Experiment Results</h1>
     
     <div class="results-content">
       <div class="result-item">
@@ -80,11 +80,6 @@
         <h2>Correct Selections</h2>
         <div class="result-value">{correctPicks} out of {totalRounds * 2 * totalBlocks}</div>
       </div>
-
-      <div class="result-item">
-        <h2>Average Time per Round</h2>
-        <div class="result-value">{averageTime.toFixed(2)} seconds</div>
-      </div>
     </div>
 
     <div class="button-container">
@@ -92,7 +87,7 @@
         Download Results (CSV)
       </button>
       <button class="restart-button" on:click={handleRestart}>
-        Start New Study
+        Restart Experiment
       </button>
     </div>
   </div>
@@ -151,7 +146,7 @@
     display: flex;
     gap: 1rem;
     justify-content: center;
-    margin-top: 2rem;
+    margin-top: 4rem;
   }
 
   .download-button {
