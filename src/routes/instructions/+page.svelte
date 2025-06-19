@@ -35,7 +35,7 @@
           shows the keyboard-based interface where you'll use number keys to navigate through the menu levels.
         </p>
         <p>
-          There will be a total of 120 rounds in the experiment, split across 3 blocks. Each block will have 20 rounds for each of the two interaction methods.
+          There will be a total of 48 rounds in the experiment, split across 2 blocks. Each block will have 12 rounds for each of the two interaction methods.
         </p>
       </section>
 
@@ -54,7 +54,7 @@
         <h2>Getting Started</h2>
         <p>
           When you're ready to begin, click the "Start" button below. The experiment will take approximately
-          20-30 minutes to complete. You'll be guided through each block and round, and your performance
+          10 minutes to complete. You'll be guided through each block and round, and your performance
           will be automatically recorded.
         </p>
       </section>

@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'isy-hierarchy-prototype-ynjciw'
+app = 'isy-hierarchy-prototype'
 primary_region = 'fra'
 
 [build]
